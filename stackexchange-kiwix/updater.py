@@ -24,7 +24,7 @@ def main():
 
 
 def _download(cfg, dataDir):
-    rsyncSource = "rsync://download.kiwix.org/zim/stack_exchange"
+    rsyncSource = "rsync://download.kiwix.org/download.kiwix.org/zim/stack_exchange/"   # trailing slash is neccessary
 
     # "include-lang", "exclude-lang" in config:
     #   stackexchange_ab_all_maxi_2020-11.zim
