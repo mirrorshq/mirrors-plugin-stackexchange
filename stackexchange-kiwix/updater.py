@@ -5,6 +5,7 @@ import os
 import re
 import json
 import time
+import pysvn
 import pathlib
 import tempfile
 import subprocess
@@ -191,9 +192,10 @@ class _Util:
 
     @staticmethod
     def githubGetFileContent(user, repo, filepath):
+        url = "https://github.com/%s/%s/trunk/%s" % (user, repo, filepath)
         with _TempCreateFile() as tmpFile:
-            url = "https://github.com/%s/%s/trunk/%s" % (user, repo, filepath)
-            _Util.cmdCall("/usr/bin/svn", "export", "-q", "--force", url, tmpFile)
+            with pysvn.Client() as client:
+                client.export(url, tmpFile)
             return pathlib.Path(tmpFile).read_text()
 
     @staticmethod
