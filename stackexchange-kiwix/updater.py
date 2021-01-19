@@ -82,6 +82,7 @@ class Main:
             cmd += "/usr/bin/rsync -rlptD --no-motd --list-only "               # we use "-rlptD" insead of "-a" so that the remote user/group is ignored
             cmd += self.__getRsyncFilterArgStr()
             cmd += " %s" % (self.rsyncUrl)
+            print(cmd)
             for item in _Util.shellCall(cmd).split("\n"):
                 # "drwxr-xr-x          2,380 2021/01/18 12:55:02 ./abc" -> "./abc"
                 m = re.fullmatch(r'\S+ +\S+ +\S+ +\S+ +(.*)', item)
@@ -139,6 +140,7 @@ class Main:
                                                                                 # we don't use --delete, it's safer
         cmd += self.__getRsyncFilterArgStr()
         cmd += " %s %s" % (self.rsyncUrl, self.dataDir)
+        print(cmd)
         _Util.shellExec(cmd)
 
     def _generateLibraryListFile(self):
@@ -162,8 +164,8 @@ class Main:
 
     def __getRsyncFilterArgStr(self):
         # "include-lang", "exclude-lang" in config:
-        #   stackexchange_ab_all_maxi_2020-11.zim
-        #             ^^
+        #   unix.stackexchange_ab_all_maxi_2020-11.zim
+        #                      ^^
         langIncList = []
         langExcList = []
         if "include-lang" in self.cfg:
@@ -175,10 +177,12 @@ class Main:
 
         argStr = " "
         for la in langExcList:
-            argStr += "-f '- *_%s_all_*.zim' " % (la)                              # ignore "exclude-lang"
+            argStr += "-f '- *.stackexchange_%s_all_*.zim' " % (la)             # ignore "exclude-lang"
         if len(langIncList) > 0:
             for la in langIncList:
-                argStr += "-f '+ *_%s_all_*.zim' " % (la)                          # we only download "_all_" category files
+                argStr += "-f '+ *.stackexchange_%s_all_*.zim' " % (la)         # we only download "_all_" category files
+        else:
+            argStr += "-f '+ *.stackexchange_*_all_*.zim' "                     # we only download "_all_" category files
         argStr += "-f '- *' "
         return argStr
 
