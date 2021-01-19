@@ -164,7 +164,7 @@ class Main:
 
     def __getRsyncFilterArgStr(self):
         # "include-lang", "exclude-lang" in config:
-        #   unix.stackexchange_ab_all_maxi_2020-11.zim
+        #   unix.stackexchange.com_ab_all_maxi_2020-11.zim
         #                      ^^
         langIncList = []
         langExcList = []
@@ -177,12 +177,12 @@ class Main:
 
         argStr = " "
         for la in langExcList:
-            argStr += "-f '- *.stackexchange_%s_all_*.zim' " % (la)             # ignore "exclude-lang"
+            argStr += "-f '- *.stackexchange.com_%s_all_*.zim' " % (la)             # ignore "exclude-lang"
         if len(langIncList) > 0:
             for la in langIncList:
-                argStr += "-f '+ *.stackexchange_%s_all_*.zim' " % (la)         # we only download "_all_" category files
+                argStr += "-f '+ *.stackexchange.com_%s_all_*.zim' " % (la)         # we only download "_all_" category files
         else:
-            argStr += "-f '+ *.stackexchange_*_all_*.zim' "                     # we only download "_all_" category files
+            argStr += "-f '+ *.stackexchange.com_*_all_*.zim' "                     # we only download "_all_" category files
         argStr += "-f '- *' "
         return argStr
 
